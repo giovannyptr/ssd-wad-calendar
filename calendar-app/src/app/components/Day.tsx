@@ -9,7 +9,7 @@ type CalendarEvent = {
     name: string;
     time: string;
     invitees: string;
-    color: string; 
+    color: string;
 }
 
 const Day: React.FC<{ day: Date }> = ({ day }) => {
@@ -19,6 +19,7 @@ const Day: React.FC<{ day: Date }> = ({ day }) => {
     const [eventName, setEventName] = useState<string>('');
     const [eventTime, setEventTime] = useState<string>('');
     const [eventInvitees, setEventInvitees] = useState<string>('');
+    const [editingEventId, setEditingEventId] = useState<string | null>(null);
 
     // This useEffect will only run in the browser, after the component has been rendered
     useEffect(() => {
@@ -35,25 +36,39 @@ const Day: React.FC<{ day: Date }> = ({ day }) => {
 
     const addEvent = (e: React.FormEvent) => {
         e.preventDefault();
-        if (events.length < 3) {
+        if (events.length < 3 || editingEventId) {
             const newEvent = {
-                id: uuidv4(),
+                id: editingEventId || uuidv4(),
                 name: eventName,
                 time: eventTime,
                 invitees: eventInvitees,
-                color: getRandomColor(), // assign a random color to the new event
+                color: editingEventId ? events.find(event => event.id === editingEventId)!.color : getRandomColor(),
             };
-            const newEvents = [...events, newEvent];
+            const newEvents = events.filter(event => event.id !== editingEventId);
+            newEvents.push(newEvent);
             setEvents(newEvents);
             setShowEventForm(false);
             setEventName('');
             setEventTime('');
             setEventInvitees('');
+            setEditingEventId(null);
             localStorage.setItem(dayString, JSON.stringify(newEvents));
         } else {
             alert('Maximum of 3 events per day reached.');
         }
     };
+
+    const updateEvent = (id: string, updatedEvent: Omit<CalendarEvent, 'id'>) => {
+        setEvents(prevEvents => {
+          return prevEvents.map(event => {
+            if (event.id === id) {
+              return { id, ...updatedEvent };
+            }
+            return event;
+          });
+        });
+        localStorage.setItem(dayString, JSON.stringify(events));
+      };
 
 
     const deleteEvent = (id: string) => {
@@ -98,13 +113,7 @@ const Day: React.FC<{ day: Date }> = ({ day }) => {
                 </form>
             )}
             <div className={styles.dayEvents}>
-                {events.map(event => (
-                    <Event
-                        key={event.id}
-                        event={event}
-                        deleteEvent={deleteEvent}
-                    />
-                ))}
+            {events.map(event => <Event key={event.id} event={event} deleteEvent={deleteEvent} updateEvent={updateEvent} />)}
             </div>
         </div>
     );
