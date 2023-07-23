@@ -1,0 +1,14 @@
+/* Calendar.module.css */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+  }
+  
+  .calendar-header {
+    grid-column: span 7;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
