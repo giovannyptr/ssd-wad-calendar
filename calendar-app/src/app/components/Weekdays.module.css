@@ -1,0 +1,16 @@
+.weekdayGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    /* Creates a 7-column grid */
+    gap: 1em;
+    /* Sets a gap between grid items */
+    justify-items: center;
+    /* Centers the weekday names */
+    padding: 0.5em;
+    /* Adds some padding around the grid */
+}
+
+.weekday {
+    font-weight: bold;
+    /* Makes the weekday names bold */
+}

@@ -1,14 +1,39 @@
 /* Calendar.module.css */
 .calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1rem;
-  }
-  
-  .calendar-header {
-    grid-column: span 7;
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: flex-start;
+  grid-column: span 7;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+
+
+}
+
+.dayGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekdayGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* Creates a 7-column grid */
+  gap: 1em;
+  /* Sets a gap between grid items */
+  justify-items: center;
+  /* Centers the weekday names */
+  padding: 0.5em;
+  /* Adds some padding around the grid */
+}
+
+.weekday {
+  font-weight: bold;
+  /* Makes the weekday names bold */
+}
